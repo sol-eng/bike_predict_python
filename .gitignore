@@ -112,6 +112,9 @@ venv.bak/
 .*
 !/.gitignore
 
+# joblib model files
+*.joblib
+
 # Spyder project settings
 .spyderproject
 .spyproject

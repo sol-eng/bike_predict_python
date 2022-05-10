@@ -1,0 +1,11 @@
+{
+    "https://colorado.rstudio.com/rsc/": {
+        "server_url": "https://colorado.rstudio.com/rsc/",
+        "filename": "/usr/home/xu.fei/bike_predict_python",
+        "app_url": "https://colorado.rstudio.com/rsc/connect/#/apps/f61c7722-1b41-4cb1-ac55-a67e6d226925",
+        "app_id": 11321,
+        "app_guid": "f61c7722-1b41-4cb1-ac55-a67e6d226925",
+        "title": "Xgboost model for bike share",
+        "app_mode": "python-fastapi"
+    }
+}
