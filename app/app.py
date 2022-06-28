@@ -9,18 +9,19 @@ import requests as req
 import pandas as pd
 from dotenv import load_dotenv
 from plotnine import *
+
 load_dotenv()
 
 board = pins.board_rsconnect(server_url="https://colorado.rstudio.com/rsc")
 df_stations = board.pin_read("alex.gold/bike_station_info")
 
 # convert longitude for map projection
-df_stations.loc[:, 'lon'] = df_stations.loc[:, 'lon'] + 360
-df_stations['pred'] = np.random.randint(0,30,size=df_stations.shape[0])
+df_stations.loc[:, "lon"] = df_stations.loc[:, "lon"] + 360
+df_stations["pred"] = np.random.randint(0, 30, size=df_stations.shape[0])
 
 location_options = {
-    str(df_stations["station_id"][l]):df_stations["name"][l] for l in df_stations.index
-    }
+    str(df_stations["station_id"][l]): df_stations["name"][l] for l in df_stations.index
+}
 
 
 app_ui = ui.page_fluid(
@@ -34,9 +35,10 @@ app_ui = ui.page_fluid(
     ui.div(
         ui.input_select("bike_station", "Select location", location_options),
         ui.output_text_verbatim("txt"),
-        ui.output_plot('plot')
+        ui.output_plot("plot"),
     ),
-) 
+)
+
 
 def server(input, output, session):
 
@@ -47,14 +49,19 @@ def server(input, output, session):
     map.layout.width = "100%"
 
     def handle_click(**kwargs):
-        coordinates = kwargs['coordinates']
+        coordinates = kwargs["coordinates"]
         print(coordinates)
         return coordinates
 
     for station_id, name, lat, lon, pred_num_bikes in df_stations.values:
-        message = HTML(value=f'Predicated # of bikes at {name}: {pred_num_bikes}')
-        circle = Circle(location=(lat, lon), radius=pred_num_bikes*2, color="dodgerblue", fill_color="dodgerblue")
-        circle.on_click(handle_click)  
+        message = HTML(value=f"Predicated # of bikes at {name}: {pred_num_bikes}")
+        circle = Circle(
+            location=(lat, lon),
+            radius=pred_num_bikes * 2,
+            color="dodgerblue",
+            fill_color="dodgerblue",
+        )
+        circle.on_click(handle_click)
         circle.popup = message
         map.add_layer(circle)
 
@@ -88,13 +95,16 @@ def server(input, output, session):
         )
         prediction = pd.DataFrame.from_dict(r.json())
         prediction.times = pd.to_datetime(prediction.times)
-        fig = ( ggplot(prediction)
-                + aes(x='times', y='pred')
-                + geom_line() # line plot
-                + scale_x_datetime(date_breaks = "4 hours", date_labels = "%I:%M %p", minor_breaks=4)
-                + labs(x='time', y='# of predicted bikes in the next 24 hrs') 
-                + theme_light()
-                )
+        fig = (
+            ggplot(prediction)
+            + aes(x="times", y="pred")
+            + geom_line()  # line plot
+            + scale_x_datetime(
+                date_breaks="4 hours", date_labels="%I:%M %p", minor_breaks=4
+            )
+            + labs(x="time", y="# of predicted bikes in the next 24 hrs")
+            + theme_light()
+        )
 
         return fig
 
