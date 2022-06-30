@@ -1,3 +1,5 @@
+
+#%%
 from shiny import *
 from ipyshiny import output_widget, register_widget, reactive_read
 from ipyleaflet import Map, basemaps, Circle
@@ -9,7 +11,7 @@ import requests as req
 import pandas as pd
 from dotenv import load_dotenv
 from plotnine import *
-
+#%%
 load_dotenv()
 
 board = pins.board_rsconnect(server_url="https://colorado.rstudio.com/rsc")
@@ -33,10 +35,12 @@ app_ui = ui.page_fluid(
     ),
     output_widget("map"),
     ui.div(
-        ui.input_select("bike_station", "Select location", location_options),
-        ui.output_text_verbatim("txt"),
+        ui.input_select("bike_station", "Select location by clicking on a circle on the map", location_options),
         ui.output_plot("plot"),
     ),
+    ui.row(
+        ui.output_text_verbatim("text"),
+    )
 )
 
 
@@ -48,13 +52,14 @@ def server(input, output, session):
     map.layout.height = "400px"
     map.layout.width = "100%"
 
+    station = reactive.Value()
+
     def handle_click(**kwargs):
-        coordinates = kwargs["coordinates"]
-        print(coordinates)
-        return coordinates
+        coords = kwargs['coordinates']
+        station.set(coords)
 
     for station_id, name, lat, lon, pred_num_bikes in df_stations.values:
-        message = HTML(value=f"Predicated # of bikes at {name}: {pred_num_bikes}")
+        message = HTML(value=f"Predicted # of bikes at {name}: {pred_num_bikes}")
         circle = Circle(
             location=(lat, lon),
             radius=pred_num_bikes * 2,
@@ -64,17 +69,6 @@ def server(input, output, session):
         circle.on_click(handle_click)
         circle.popup = message
         map.add_layer(circle)
-
-    # @reactive.Calc
-    # def val_click():
-    #     print(f'text {input.on_click()}')
-    #     return input.on_click()
-
-    @output
-    @render.text
-    def text():
-        coord = input.on_click(handle_click)
-        return f"{coord}"
 
     # When the slider changes, update the map's zoom attribute (2)
     @reactive.Effect
@@ -86,6 +80,7 @@ def server(input, output, session):
     def _():
         ui.update_slider("zoom", value=reactive_read(map, "zoom"))
 
+        
     @output()
     @render.plot(alt="line chart")
     def plot():
@@ -105,8 +100,11 @@ def server(input, output, session):
             + labs(x="time", y="# of predicted bikes in the next 24 hrs")
             + theme_light()
         )
-
         return fig
 
+    @output()
+    @render.text()
+    def text():
+        return f'Coordinates are: {station()}'
 
 app = App(app_ui, server)
