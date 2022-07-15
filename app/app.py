@@ -13,37 +13,42 @@ from vetiver.server import predict, vetiver_endpoint
 
 load_dotenv()
 
-now = datetime.now()
 
-
-def add_current_num_bikes(df_json: pd.DataFrame, df_add_column: pd.DataFrame) -> pd.DataFrame:
+def add_current_num_bikes(
+    df_json: pd.DataFrame, df_add_column: pd.DataFrame
+) -> pd.DataFrame:
+    """Add the current # of bikes from live feed."""
     df_add_column["num_bikes_available"] = df_json["num_bikes_available"]
     return df_add_column
 
 
 def add_coordinates_to_df(df: pd.DataFrame) -> pd.DataFrame:
+    """Add the combined coordinates column to dataframe."""
     df_copy = df.copy()
     df_copy["coords"] = df_copy[["lat", "lon"]].values.tolist()
     return df_copy
 
 
 def process_dataframe_for_mapping(df: pd.DataFrame) -> pd.DataFrame:
-    """Process dataframe so it can be mapped"""
+    """Process dataframe so it can be mapped."""
     df_copy = add_coordinates_to_df(df)
     df_to_map = df_copy.loc[:, ["name", "lat", "lon", "num_bikes_available", "coords"]]
     return df_to_map
 
 
 def create_coords_station_dict(df: pd.DataFrame) -> dict:
-    """Create a dictionary with coordinates as keys and station id as values"""
+    """Create a dictionary with coordinates as keys and station id as values to reverse loop up ids."""
     df_copy = add_coordinates_to_df(df)
     coords_station: dict = {
-        tuple(coords): (str(id), name) for coords, id, name in df_copy[["coords", "station_id", "name"]].values
+        tuple(coords): (str(id), name)
+        for coords, id, name in df_copy[["coords", "station_id", "name"]].values
     }
     return coords_station
 
 
 def create_24_hrs_df_to_plot() -> pd.DataFrame:
+    """Create a dataframe 24 hours from the current time for plotting predicted number of bikes."""
+    now = datetime.now()
     hrs = pd.date_range(now, periods=24, freq="H")
     df_to_plot: pd.DataFrame = pd.DataFrame(
         index=range(24), columns=["id", "datetime", "hour", "month", "day_of_week"]
@@ -69,6 +74,7 @@ def create_24_hrs_df_to_plot() -> pd.DataFrame:
     df_to_plot = df_to_plot.loc[:, ~df_to_plot.columns.isin(["day_of_week"])].copy()
     return df_to_plot
 
+
 df_to_plot = create_24_hrs_df_to_plot()
 board = pins.board_rsconnect(server_url="https://colorado.rstudio.com/rsc")
 df_stations = board.pin_read("sam.edwardes/bike-predict-r-station-info-pin")
@@ -76,7 +82,9 @@ endpoint = vetiver_endpoint(
     "https://colorado.rstudio.com/rsc/new-bikeshare-model/predict/"
 )
 
-df_json = pd.read_json("https://gbfs.capitalbikeshare.com/gbfs/en/station_status.json")['data']['stations']
+df_json = pd.read_json("https://gbfs.capitalbikeshare.com/gbfs/en/station_status.json")[
+    "data"
+]["stations"]
 df_json_normal = pd.json_normalize(df_json)
 df_stations = add_current_num_bikes(df_json_normal, df_stations)
 
@@ -111,21 +119,20 @@ def server(input: Inputs, output: Outputs, session: Session):
     df_to_map = process_dataframe_for_mapping(df_stations)
     coords_station: dict = create_coords_station_dict(df_stations)
 
-
     def add_id(df):
         if station():
             df["id"] = int(coords_station[tuple(station())][0])
         return df
 
-
     def handle_click(**kwargs):
         coords = kwargs["coordinates"]
         station.set(coords)
 
-
     circle_markers: list = []
     for name, lat, lon, pred_num_bikes, coords in df_to_map.values:
-        message = HTML(value=f"Right now there are {int(pred_num_bikes)} bikes at: {name}")
+        message = HTML(
+            value=f"Right now there are {int(pred_num_bikes)} bikes at: {name}"
+        )
         circle = Circle(
             location=(lat, lon),
             radius=int(pred_num_bikes),
@@ -142,11 +149,14 @@ def server(input: Inputs, output: Outputs, session: Session):
     marker_cluster = MarkerCluster(markers=circle_markers)
     map.add_layer(marker_cluster)
 
-    
     @output()
     @render.text()
     def text():
-        return "" if station() else "Please click on a circle marker to see the predicted # of bikes over the next 24 hours"
+        return (
+            ""
+            if station()
+            else "Please click on a circle marker to see the predicted # of bikes over the next 24 hours"
+        )
 
     @output()
     @render.plot(alt="line chart")
@@ -159,16 +169,15 @@ def server(input: Inputs, output: Outputs, session: Session):
             fig = (
                 ggplot(df_to_plot_id)
                 + aes(x="datetime", y="pred")
-                + geom_line(color='dimgray')
+                + geom_line(color="dimgray")
                 + scale_x_datetime(date_breaks="3 hours", date_labels="%I:%M %p")
                 + labs(x="time", y="# of bikes predicted")
                 + ggtitle(f"Predicted # of bikes at {name} over the next 24 hrs")
                 + theme_light()
-                + theme(text = element_text(size = 15))
+                + theme(text=element_text(size=15))
             )
             return fig
         pass
-    
 
 
 app = App(app_ui, server)
