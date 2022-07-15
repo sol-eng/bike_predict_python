@@ -16,38 +16,7 @@ load_dotenv()
 now = datetime.now()
 
 
-def add_time_to_df(df: pd.DataFrame) -> pd.DataFrame:
-    df_time = df.copy()
-    hour, month, day_of_week = (
-        now.hour,
-        now.month,
-        calendar.day_name[datetime.today().weekday()],
-    )
-    df_time["hour"] = hour
-    df_time["month"] = month
-    df_time[f"{day_of_week}"] = 1
-    dict_day_of_week = {
-        "Friday": 0,
-        "Monday": 0,
-        "Saturday": 0,
-        "Sunday": 0,
-        "Thursday": 0,
-        "Tuesday": 0,
-        "Wednesday": 0,
-    }
-    dict_day_of_week.pop(day_of_week)
-    for key, value in dict_day_of_week.items():
-        df_time[key] = value
-    return df_time
-
-
-# def create_df_station_to_predict(df: pd.DataFrame) -> pd.DataFrame:
-#     df_to_pred = df.loc[:, ~df.columns.isin(["name", "lat", "lon"])].copy()
-#     df_to_pred.rename(columns={"station_id": "id"}, inplace=True)
-#     return df_to_pred
-
-
-def add_live_feed(df_json: pd.DataFrame, df_add_column: pd.DataFrame) -> pd.DataFrame:
+def add_current_num_bikes(df_json: pd.DataFrame, df_add_column: pd.DataFrame) -> pd.DataFrame:
     df_add_column["num_bikes_available"] = df_json["num_bikes_available"]
     return df_add_column
 
@@ -74,16 +43,42 @@ def create_coords_station_dict(df: pd.DataFrame) -> dict:
     return coords_station
 
 
+def create_24_hrs_df_to_plot() -> pd.DataFrame:
+    hrs = pd.date_range(now, periods=24, freq="H")
+    df_to_plot: pd.DataFrame = pd.DataFrame(
+        index=range(24), columns=["id", "datetime", "hour", "month", "day_of_week"]
+    )
+    df_to_plot["datetime"] = hrs
+    df_to_plot["day_of_week"] = hrs.day_name()
+    df_to_plot["hour"] = hrs.hour
+    df_to_plot["month"] = hrs.month
+    day_of_week: dict = {
+        "Friday": 0,
+        "Monday": 0,
+        "Saturday": 0,
+        "Sunday": 0,
+        "Thursday": 0,
+        "Tuesday": 0,
+        "Wednesday": 0,
+    }
+    df_to_plot = df_to_plot.join(pd.get_dummies(df_to_plot.day_of_week))
+    days: set = set(df_to_plot.loc[:, "day_of_week"].values)
+    remaining_days: dict = {k: v for k, v in day_of_week.items() if k not in days}
+    for key, value in remaining_days.items():
+        df_to_plot[key] = value
+    df_to_plot = df_to_plot.loc[:, ~df_to_plot.columns.isin(["day_of_week"])].copy()
+    return df_to_plot
+
+df_to_plot = create_24_hrs_df_to_plot()
 board = pins.board_rsconnect(server_url="https://colorado.rstudio.com/rsc")
 df_stations = board.pin_read("sam.edwardes/bike-predict-r-station-info-pin")
 endpoint = vetiver_endpoint(
     "https://colorado.rstudio.com/rsc/new-bikeshare-model/predict/"
 )
-df_time = add_time_to_df(df_stations)
+
 df_json = pd.read_json("https://gbfs.capitalbikeshare.com/gbfs/en/station_status.json")['data']['stations']
 df_json_normal = pd.json_normalize(df_json)
-# df_pred_all_stations = create_df_station_to_predict(df_time)
-df_time = add_live_feed(df_json_normal, df_time)
+df_stations = add_current_num_bikes(df_json_normal, df_stations)
 
 app_ui = ui.page_fluid(
     ui.row(
@@ -113,36 +108,15 @@ def server(input: Inputs, output: Outputs, session: Session):
     register_widget("map", map)
 
     station = reactive.Value(False)
-    df_to_map = process_dataframe_for_mapping(df_time)
+    df_to_map = process_dataframe_for_mapping(df_stations)
     coords_station: dict = create_coords_station_dict(df_stations)
 
-    def create_dataframe_to_plot() -> pd.DataFrame:
-        hrs = pd.date_range(now, periods=24, freq="H")
-        df_to_plot: pd.DataFrame = pd.DataFrame(
-            index=range(24), columns=["id", "datetime", "hour", "month", "day_of_week"]
-        )
-        df_to_plot["datetime"] = hrs
-        df_to_plot["day_of_week"] = hrs.day_name()
-        df_to_plot["hour"] = hrs.hour
-        df_to_plot["month"] = hrs.month
+
+    def add_id(df):
         if station():
-            df_to_plot["id"] = int(coords_station[tuple(station())][0])
-        day_of_week: dict = {
-            "Friday": 0,
-            "Monday": 0,
-            "Saturday": 0,
-            "Sunday": 0,
-            "Thursday": 0,
-            "Tuesday": 0,
-            "Wednesday": 0,
-        }
-        df_to_plot = df_to_plot.join(pd.get_dummies(df_to_plot.day_of_week))
-        days: set = set(df_to_plot.loc[:, "day_of_week"].values)
-        remaining_days: dict = {k: v for k, v in day_of_week.items() if k not in days}
-        for key, value in remaining_days.items():
-            df_to_plot[key] = value
-        df_to_plot = df_to_plot.loc[:, ~df_to_plot.columns.isin(["day_of_week"])].copy()
-        return df_to_plot
+            df["id"] = int(coords_station[tuple(station())][0])
+        return df
+
 
     def handle_click(**kwargs):
         coords = kwargs["coordinates"]
@@ -177,13 +151,13 @@ def server(input: Inputs, output: Outputs, session: Session):
     @output()
     @render.plot(alt="line chart")
     def plot():
-        df_to_plot = create_dataframe_to_plot()
-        df_to_pred = df_to_plot.loc[:, ~df_to_plot.columns.isin(["datetime"])]
+        df_to_plot_id = add_id(df_to_plot)
+        df_to_pred = df_to_plot_id.loc[:, ~df_to_plot_id.columns.isin(["datetime"])]
         if station():
-            df_to_plot["pred"] = predict(endpoint, df_to_pred)
+            df_to_plot_id["pred"] = predict(endpoint, df_to_pred)
             name = coords_station[tuple(station())][1]
             fig = (
-                ggplot(df_to_plot)
+                ggplot(df_to_plot_id)
                 + aes(x="datetime", y="pred")
                 + geom_line(color='dimgray')
                 + scale_x_datetime(date_breaks="3 hours", date_labels="%I:%M %p")
