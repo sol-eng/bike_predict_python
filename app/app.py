@@ -105,38 +105,32 @@ app_ui = ui.page_fluid(
 
 
 def server(input: Inputs, output: Outputs, session: Session):
-
-    
     def get_id(df_map):
         if tuple(station()) in coords_station:
             id = coords_station[tuple(station())][0]
         else:
             closest_idx = coords_tree.query(station())[1]
-            coords: tuple = tuple(df_map.loc[closest_idx, 'coords'])
+            coords: tuple = tuple(df_map.loc[closest_idx, "coords"])
             id = coords_station[coords][0]
         return id
-
 
     def get_name(df_map):
         if tuple(station()) in coords_station:
             name = coords_station[tuple(station())][1]
         else:
             closest_idx = coords_tree.query(station())[1]
-            coords: tuple = tuple(df_map.loc[closest_idx, 'coords'])
+            coords: tuple = tuple(df_map.loc[closest_idx, "coords"])
             name = coords_station[coords][1]
         return name
 
-
     def add_id(df, df_map):
         if station():
-            df['id'] = int(get_id(df_map))
+            df["id"] = int(get_id(df_map))
         return df
-
 
     def handle_click(**kwargs):
         coords = kwargs["coordinates"]
         station.set(coords)
-
 
     map = Map(
         basemap=basemaps.Esri.WorldTopoMap,
@@ -145,14 +139,14 @@ def server(input: Inputs, output: Outputs, session: Session):
         scroll_wheel_zoom=True,
     )
     map.layout.height = "500px"
-    map.layout.width = "90%"
+    map.layout.width = "100%"
     register_widget("map", map)
 
     station = reactive.Value(False)
     df_to_map = process_dataframe_for_mapping(df_stations)
     coords_station: dict = create_coords_station_dict(df_stations)
-    coords_tree = spatial.KDTree(df_to_map['coords'].values.tolist())
-    
+    coords_tree = spatial.KDTree(df_to_map["coords"].values.tolist())
+
     circle_markers: list = []
     for name, lat, lon, pred_num_bikes, coords in df_to_map.values:
         message = HTML(
@@ -160,7 +154,7 @@ def server(input: Inputs, output: Outputs, session: Session):
         )
         circle = Circle(
             location=(lat, lon),
-            radius=int(pred_num_bikes),
+            radius=int(pred_num_bikes) * 2,
             color="darkblue",
             fill_color="darkblue",
             fill_opacity=0.4,
