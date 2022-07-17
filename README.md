@@ -2,7 +2,7 @@
 
 This repository is an equivalent of the Bike Predict example built in R, but it uses Python to achieve a similar workflow. It is built using Python packages vetiver, pins and Shiny for Python and is deploybale on [RStudio Connect](https://rstudio.com/products/connect/), 
 
-![](img/bike_python.png)
+![](img/bikeshare_python.png)
 
 ## Who This is For
 
