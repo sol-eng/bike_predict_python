@@ -1,0 +1,51 @@
+---
+title: "Bike Predict Python - Overview"
+format:
+  html:
+    pagetitle: "Python Data Science with RStudio Connect: Bike Share"
+    description-meta: "Model training, serving, and app deployment--powered by RStudio Connect."
+    twitter-card: true
+    image: https://github.com/sol-eng/bike_predict_python/raw/main/img/bikeshare_python.png
+    image-alt: "Workflow diagram from scheduled jobs to apps"
+---
+
+
+
+<a href="https://github.com/sol-eng/bike_predict_python"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="View me on GitHub"></a>
+
+
+<br>
+
+## Background
+
+This project illustrates using RStudio Connect to deploy a Python data science project featuring:
+
+![](../img/bikeshare_python.png)
+
+### Scheduled jobs
+
+- Training predictive models using data from a database and R pins on RStudio Connect.
+
+### Pins
+
+- Serving trained models for use in apps, APIs, and other jobs.
+
+### APIs / Vetiver
+
+- Deploying models as a REST API and monitoring model performance using vetiver.
+
+### Development and Production Apps
+  
+- Exposing model predictions to end-users via Shiny fo Python apps.
+- Using git-backed deployment to keep a stable version of the application available from the main branch while doing development work on another branch.
+
+## Content
+
+Explore the deployed items below:
+
+| Name | Asset Type | Tool Used | Owner |
+|---------|:-----:|:------:|:------:|
+| [Bike Prediction API](https://colorado.rstudio.com/rsc/new-bikeshare-model/)  | API  | [Vetiver](https://vetiver.tidymodels.org) |   Gagan Singh  |
+| [Random Forest Model](https://colorado.rstudio.com/rsc/connect/#/apps/2d209d41-529b-4c17-ac88-3c98bdbe0fcc/access)  | API  | [Vetiver](https://vetiver.tidymodels.org) |   Gagan Singh  |
+| [Bike Predict - App](https://colorado.rstudio.com/rsc/bike-share-python)     | App  | [Shiny for Python](https://github.com/rstudio/py-shiny) | Xu Fei  |
+| [Bike Predict - App (DEV)](https://colorado.rstudio.com/rsc/bike-share-python-dev) | App  | [Shiny for Python](https://github.com/rstudio/py-shiny) | Xu Fei |

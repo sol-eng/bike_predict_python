@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.28">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Model training, serving, and app deployment–powered by RStudio Connect.">
+
+<title>Python Data Science with RStudio Connect: Bike Share</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+<script src="overview_files/libs/clipboard/clipboard.min.js"></script>
+<script src="overview_files/libs/quarto-html/quarto.js"></script>
+<script src="overview_files/libs/quarto-html/popper.min.js"></script>
+<script src="overview_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="overview_files/libs/quarto-html/anchor.min.js"></script>
+<link href="overview_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="overview_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="overview_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="overview_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="overview_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Bike Predict Python - Overview</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<p><a href="https://github.com/sol-eng/bike_predict_python"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="View me on GitHub"></a></p>
+<p><br></p>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">Background</h2>
+<p>This project illustrates using RStudio Connect to deploy a Python data science project featuring:</p>
+<p><img src="../img/bikeshare_python.png" class="img-fluid"></p>
+<section id="scheduled-jobs" class="level3">
+<h3 class="anchored" data-anchor-id="scheduled-jobs">Scheduled jobs</h3>
+<ul>
+<li>Training predictive models using data from a database and R pins on RStudio Connect.</li>
+</ul>
+</section>
+<section id="pins" class="level3">
+<h3 class="anchored" data-anchor-id="pins">Pins</h3>
+<ul>
+<li>Serving trained models for use in apps, APIs, and other jobs.</li>
+</ul>
+</section>
+<section id="apis-vetiver" class="level3">
+<h3 class="anchored" data-anchor-id="apis-vetiver">APIs / Vetiver</h3>
+<ul>
+<li>Deploying models as a REST API and monitoring model performance using vetiver.</li>
+</ul>
+</section>
+<section id="development-and-production-apps" class="level3">
+<h3 class="anchored" data-anchor-id="development-and-production-apps">Development and Production Apps</h3>
+<ul>
+<li>Exposing model predictions to end-users via Shiny fo Python apps.</li>
+<li>Using git-backed deployment to keep a stable version of the application available from the main branch while doing development work on another branch.</li>
+</ul>
+</section>
+</section>
+<section id="content" class="level2">
+<h2 class="anchored" data-anchor-id="content">Content</h2>
+<p>Explore the deployed items below:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Name</th>
+<th style="text-align: center;">Asset Type</th>
+<th style="text-align: center;">Created with</th>
+<th style="text-align: center;">Owner</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://colorado.rstudio.com/rsc/new-bikeshare-model/">Bike Prediction API</a></td>
+<td style="text-align: center;">API</td>
+<td style="text-align: center;"><a href="https://vetiver.tidymodels.org">Vetiver</a></td>
+<td style="text-align: center;">Gagan Singh</td>
+</tr>
+<tr class="even">
+<td><a href="https://colorado.rstudio.com/rsc/connect/#/apps/2d209d41-529b-4c17-ac88-3c98bdbe0fcc/access">Random Forest Model</a></td>
+<td style="text-align: center;">API</td>
+<td style="text-align: center;"><a href="https://vetiver.tidymodels.org">Vetiver</a></td>
+<td style="text-align: center;">Gagan Singh</td>
+</tr>
+<tr class="odd">
+<td><a href="https://colorado.rstudio.com/rsc/bike-share-python">Bike Predict - App</a></td>
+<td style="text-align: center;">App</td>
+<td style="text-align: center;"><a href="https://github.com/rstudio/py-shiny">Shiny for Python</a></td>
+<td style="text-align: center;">Xu Fei</td>
+</tr>
+<tr class="even">
+<td><a href="https://colorado.rstudio.com/rsc/bike-share-python-dev">Bike Predict - App (DEV)</a></td>
+<td style="text-align: center;">App</td>
+<td style="text-align: center;"><a href="https://github.com/rstudio/py-shiny">Shiny for Python</a></td>
+<td style="text-align: center;">Xu Fei</td>
+</tr>
+</tbody>
+</table>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
