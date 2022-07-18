@@ -1,16 +1,22 @@
-# bike_predict_python
-A demo of a data science project, using Python and RStudio Connect
+# Bike Predict - Machine Learning in Python with RStudio Connect
 
-# Bike Predict - Collaborative Data Science in Python with RStudio Connect
-
-This repository contains an example of using [RStudio Connect](https://rstudio.com/products/connect/), [pins](https://github.com/rstudio/pins), [vetiver](https://vetiver.tidymodels.org), [Shiny for Python](https://github.com/rstudio/py-shiny) to create a data science project in Python.
+This repository contains an example of using [pins](https://github.com/rstudio/pins), [vetiver](https://vetiver.tidymodels.org), [Shiny for Python](https://github.com/rstudio/py-shiny) to create a machine learning project in Python. Everything is deployable on [RStudio Connect](https://rstudio.com/products/connect/). 
 
 ![](img/bikeshare_python.png)
 
 ## Who This is For
 
-1. *Python data scientsts* and *IT admins* of machine learning projects.
+1. Python data scientists who want to build machine learning projects with or without [RStudio Connect](https://rstudio.com/products/connect/).
 2. People who describe *production-izing* or *deploying* content as pain points may find this helpful.
+This repository is aimed for bilingual data scientists who want to utilize both and R python in their data science workflow. It can also be used as an example for bilingual data science teams (Python and R) to colloborate with open source tools like pins, vetiver, and Shiny.
+
+### WIP
+
+add more details on the workflow.
+
+## What doesn't it do
+
+TBD
 
 ## Individual Content
 
