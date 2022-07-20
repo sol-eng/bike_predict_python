@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "locale": "en_US.UTF-8",
+  "metadata": {
+    "appmode": "jupyter-static",
+    "entrypoint": "model_training_deployment.ipynb"
+  },
+  "python": {
+    "version": "3.10.4",
+    "package_manager": {
+      "name": "pip",
+      "version": "21.2.4",
+      "package_file": "requirements.txt"
+    }
+  },
+  "files": {
+    "model_training_deployment.ipynb": {
+      "checksum": "1bc467b842226a4762d279d9e5fca56d"
+    },
+    "requirements.txt": {
+      "checksum": "3a18b15dc122c29aa9af9c3664d4ded0"
+    }
+  }
+}
