@@ -99,6 +99,7 @@ pycparser==2.21
 pydantic==1.9.1
 pyflakes==2.4.0
 Pygments==2.12.0
+pyarrow==8.0.0
 pyparsing==3.0.9
 pyrsistent==0.18.1
 pytest==7.1.2

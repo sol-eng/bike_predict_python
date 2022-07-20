@@ -77,7 +77,7 @@ def create_24_hrs_df_to_plot() -> pd.DataFrame:
 
 df_to_plot = create_24_hrs_df_to_plot()
 board = pins.board_rsconnect(server_url="https://colorado.rstudio.com/rsc")
-df_stations = board.pin_read("sam.edwardes/bike-predict-r-station-info-pin")
+df_stations = board.pin_read("xu.fei/bike-predict-python-station-info-pin")
 endpoint = vetiver_endpoint(
     "https://colorado.rstudio.com/rsc/new-bikeshare-model/predict/"
 )
@@ -150,8 +150,8 @@ def server(input: Inputs, output: Outputs, session: Session):
         circle = Circle(
             location=(lat, lon),
             radius=int(pred_num_bikes) * 2,
-            color="darkblue",
-            fill_color="darkblue",
+            color="darkgreen",
+            fill_color="darkgreen",
             fill_opacity=0.4,
             opacity=0.4,
             name=name,
