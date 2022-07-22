@@ -19,6 +19,7 @@ def add_current_num_bikes(
 ) -> pd.DataFrame:
     """Add the current # of bikes from live feed."""
     df_add_column["num_bikes_available"] = df_json["num_bikes_available"]
+    df_add_column["num_bikes_available"].fillna(0, inplace=True)
     return df_add_column
 
 
@@ -32,7 +33,8 @@ def add_coordinates_to_df(df: pd.DataFrame) -> pd.DataFrame:
 def process_dataframe_for_mapping(df: pd.DataFrame) -> pd.DataFrame:
     """Process dataframe so it can be mapped."""
     df_copy = add_coordinates_to_df(df)
-    df_to_map = df_copy.loc[:, ["name", "lat", "lon", "num_bikes_available", "coords"]]
+    df_to_map = df_copy.loc[:, ["name", "lat",
+                                "lon", "num_bikes_available", "coords"]]
     return df_to_map
 
 
@@ -68,16 +70,22 @@ def create_24_hrs_df_to_plot() -> pd.DataFrame:
     }
     df_to_plot = df_to_plot.join(pd.get_dummies(df_to_plot.day_of_week))
     days: set = set(df_to_plot.loc[:, "day_of_week"].values)
-    remaining_days: dict = {k: v for k, v in day_of_week.items() if k not in days}
+    remaining_days: dict = {k: v for k,
+                            v in day_of_week.items() if k not in days}
     for key, value in remaining_days.items():
         df_to_plot[key] = value
-    df_to_plot = df_to_plot.loc[:, ~df_to_plot.columns.isin(["day_of_week"])].copy()
+    df_to_plot = df_to_plot.loc[:, ~
+                                df_to_plot.columns.isin(["day_of_week"])].copy()
     return df_to_plot
 
 
+#####################################
+# Loading data from an existing R pin
+#####################################
+
 df_to_plot = create_24_hrs_df_to_plot()
 board = pins.board_rsconnect(server_url="https://colorado.rstudio.com/rsc")
-df_stations = board.pin_read("xu.fei/bike-predict-python-station-info-pin")
+df_stations = board.pin_read("sam.edwardes/bike-predict-r-station-info-pin")
 endpoint = vetiver_endpoint(
     "https://colorado.rstudio.com/rsc/new-bikeshare-model/predict/"
 )
@@ -88,9 +96,12 @@ df_json = pd.read_json("https://gbfs.capitalbikeshare.com/gbfs/en/station_status
 df_json_normal = pd.json_normalize(df_json)
 df_stations = add_current_num_bikes(df_json_normal, df_stations)
 
+###########################
+# UI components
+###########################
 app_ui = ui.page_fluid(
     ui.row(
-        ui.panel_well("Where can I get a bike? Capitol Bikeshare Python"),
+        ui.panel_well("Where can I get a bike? -- Capital Bikeshare Python"),
         ui.help_text("Bike Station Map"),
     ),
     output_widget("map"),
@@ -101,6 +112,10 @@ app_ui = ui.page_fluid(
         ui.output_plot("plot"),
     ),
 )
+
+###########################
+# Server components
+###########################
 
 
 def server(input: Inputs, output: Outputs, session: Session):
@@ -120,7 +135,7 @@ def server(input: Inputs, output: Outputs, session: Session):
     def add_id(df: pd.DataFrame, df_map: pd.DataFrame) -> pd.DataFrame:
         '''Add the id column to dataframe from looked up id'''
         if station():
-            df["id"] = int(get_id_name(df_map)[0])
+            df["id"] = get_id_name(df_map)[0]
         return df
 
     def handle_click(**kwargs):
@@ -128,6 +143,7 @@ def server(input: Inputs, output: Outputs, session: Session):
         coords = kwargs["coordinates"]
         station.set(coords)
 
+    station = reactive.Value(False)
     map = Map(
         basemap=basemaps.Esri.WorldTopoMap,
         center=(38.888553, -77.032429),
@@ -138,10 +154,10 @@ def server(input: Inputs, output: Outputs, session: Session):
     map.layout.width = "100%"
     register_widget("map", map)
 
-    station = reactive.Value(False)
     df_to_map = process_dataframe_for_mapping(df_stations)
     coords_station: dict = create_coords_station_dict(df_stations)
 
+    COLOR = "darkblue"
     circle_markers: list = []
     for name, lat, lon, pred_num_bikes, coords in df_to_map.values:
         message = HTML(
@@ -150,8 +166,8 @@ def server(input: Inputs, output: Outputs, session: Session):
         circle = Circle(
             location=(lat, lon),
             radius=int(pred_num_bikes) * 2,
-            color="darkgreen",
-            fill_color="darkgreen",
+            color=COLOR,
+            fill_color=COLOR,
             fill_opacity=0.4,
             opacity=0.4,
             name=name,
@@ -162,6 +178,10 @@ def server(input: Inputs, output: Outputs, session: Session):
 
     marker_cluster = MarkerCluster(markers=circle_markers)
     map.add_layer(marker_cluster)
+
+###########################
+# Reactive outputs
+###########################
 
     @output()
     @render.text()
@@ -176,7 +196,8 @@ def server(input: Inputs, output: Outputs, session: Session):
     @render.plot(alt="line chart")
     def plot():
         df_to_plot_id = add_id(df_to_plot, df_to_map)
-        df_to_pred = df_to_plot_id.loc[:, ~df_to_plot_id.columns.isin(["datetime"])]
+        df_to_pred = df_to_plot_id.loc[:, ~
+                                       df_to_plot_id.columns.isin(["datetime"])]
         if station():
             df_to_plot_id["pred"] = predict(endpoint, df_to_pred)
             name = get_id_name(df_to_map)[1]
@@ -184,7 +205,8 @@ def server(input: Inputs, output: Outputs, session: Session):
                 ggplot(df_to_plot_id)
                 + aes(x="datetime", y="pred")
                 + geom_line(color="dimgray")
-                + scale_x_datetime(date_breaks="3 hours", date_labels="%I:%M %p")
+                + scale_x_datetime(date_breaks="3 hours",
+                                   date_labels="%I:%M %p")
                 + labs(x="time", y="# of bikes predicted")
                 + ggtitle(f"Predicted # of bikes at {name} over the next 24 hrs")
                 + theme_light()
