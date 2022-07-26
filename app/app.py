@@ -83,11 +83,10 @@ def create_24_hrs_df_to_plot() -> pd.DataFrame:
 # Loading data from an existing R pin
 #####################################
 
-df_to_plot = create_24_hrs_df_to_plot()
 board = pins.board_rsconnect(server_url="https://colorado.rstudio.com/rsc")
 df_stations = board.pin_read("sam.edwardes/bike-predict-r-station-info-pin")
 endpoint = vetiver_endpoint(
-    "https://colorado.rstudio.com/rsc/new-bikeshare-model/predict/"
+    "https://colorado.rstudio.com/rsc/bike-predict-python-api/predict"
 )
 
 df_json = pd.read_json("https://gbfs.capitalbikeshare.com/gbfs/en/station_status.json")[
@@ -195,10 +194,11 @@ def server(input: Inputs, output: Outputs, session: Session):
     @output()
     @render.plot(alt="line chart")
     def plot():
-        df_to_plot_id = add_id(df_to_plot, df_to_map)
-        df_to_pred = df_to_plot_id.loc[:, ~
-                                       df_to_plot_id.columns.isin(["datetime"])]
         if station():
+            df_to_plot = create_24_hrs_df_to_plot()
+            df_to_plot_id = add_id(df_to_plot, df_to_map)
+            df_to_pred = df_to_plot_id.loc[:, ~
+                                           df_to_plot_id.columns.isin(["datetime"])]
             df_to_plot_id["pred"] = predict(endpoint, df_to_pred)
             name = get_id_name(df_to_map)[1]
             fig = (
