@@ -46,6 +46,6 @@ Explore the deployed items below:
 | Name | Asset Type | Tool Used | Owner |
 |---------|:-----:|:------:|:------:|
 | [Bike Prediction API](https://colorado.rstudio.com/rsc/new-bikeshare-model/)  | API  | [Vetiver](https://vetiver.tidymodels.org) |   Gagan Singh  |
-| [Random Forest Model](https://colorado.rstudio.com/rsc/connect/#/apps/2d209d41-529b-4c17-ac88-3c98bdbe0fcc/access)  | API  | [Vetiver](https://vetiver.tidymodels.org) |   Gagan Singh  |
+| [Random Forest Model](https://colorado.rstudio.com/rsc/bikeshare-rf-model-python-pin/)  | Pin  | [Pin](https://rstudio.github.io/pins-python/intro.html) |   Gagan Singh  |
 | [Bike Predict - App](https://colorado.rstudio.com/rsc/bike-share-python)     | App  | [Shiny for Python](https://github.com/rstudio/py-shiny) | Xu Fei  |
 | [Bike Predict - App (DEV)](https://colorado.rstudio.com/rsc/bike-share-python-dev) | App  | [Shiny for Python](https://github.com/rstudio/py-shiny) | Xu Fei |
