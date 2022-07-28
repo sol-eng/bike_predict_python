@@ -1,6 +1,6 @@
 # Bike Predict - Machine Learning in Python with RStudio Connect
 
-This repository contains an example of using [pins](https://github.com/rstudio/pins), [vetiver](https://vetiver.tidymodels.org), [Shiny for Python](https://shiny.rstudio.com/py/) to create a machine learning project in Python. Everything is deployable on [RStudio Connect](https://rstudio.com/products/connect/). 
+This repository contains an example of using [pins](https://rstudio.github.io/pins-python/), [vetiver](https://vetiver.tidymodels.org), [Shiny for Python](https://shiny.rstudio.com/py/) to create a machine learning project in Python. Everything is deployable on [RStudio Connect](https://rstudio.com/products/connect/). 
 
 ![](img/bikeshare_python.png)
 
