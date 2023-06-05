@@ -83,10 +83,10 @@ def create_24_hrs_df_to_plot() -> pd.DataFrame:
 # Loading data from an existing R pin
 #####################################
 
-board = pins.board_rsconnect(server_url="https://colorado.rstudio.com/rsc")
+board = pins.board_connect(server_url="https://colorado.posit.co/rsc")
 df_stations = board.pin_read("sam.edwardes/bike-predict-r-station-info-pin")
 endpoint = vetiver_endpoint(
-    "https://colorado.rstudio.com/rsc/bike-predict-python-api/predict"
+    "https://colorado.posit.co/rsc/bike-predict-python-api/predict"
 )
 
 df_json = pd.read_json("https://gbfs.capitalbikeshare.com/gbfs/en/station_status.json")[
