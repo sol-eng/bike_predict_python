@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 from ipyleaflet import Circle, Map, Marker, MarkerCluster, basemaps
 from ipywidgets import HTML
 from plotnine import *
-from rich import inspect
 from scipy import spatial
 from shiny import App, Inputs, Outputs, Session, reactive, render, ui
 from shinywidgets import output_widget, reactive_read, register_widget
