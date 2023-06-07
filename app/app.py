@@ -1,15 +1,15 @@
 from datetime import datetime
-from shiny import *
-from shinywidgets import output_widget, register_widget, reactive_read
-from ipyleaflet import Map, basemaps, Circle, MarkerCluster
-from ipywidgets import HTML
-from htmltools import css
-import pins
+
 import pandas as pd
+import pins
 from dotenv import load_dotenv
+from ipyleaflet import Circle, Map, Marker, MarkerCluster, basemaps
+from ipywidgets import HTML
 from plotnine import *
-from vetiver.server import predict, vetiver_endpoint
 from scipy import spatial
+from shiny import App, Inputs, Outputs, Session, reactive, render, ui
+from shinywidgets import output_widget, reactive_read, register_widget
+from vetiver.server import predict, vetiver_endpoint
 
 load_dotenv()
 
@@ -83,15 +83,10 @@ def create_24_hrs_df_to_plot() -> pd.DataFrame:
 # Loading data from an existing R pin
 #####################################
 
-board = pins.board_rsconnect(server_url="https://colorado.rstudio.com/rsc")
+board = pins.board_connect(server_url="https://colorado.posit.co/rsc")
 df_stations = board.pin_read("sam.edwardes/bike-predict-r-station-info-pin")
-endpoint = vetiver_endpoint(
-    "https://colorado.rstudio.com/rsc/bike-predict-python-api/predict"
-)
-
-df_json = pd.read_json("https://gbfs.capitalbikeshare.com/gbfs/en/station_status.json")[
-    "data"
-]["stations"]
+endpoint = vetiver_endpoint("https://colorado.posit.co/rsc/bike-predict-python-api/predict")
+df_json = pd.read_json("https://gbfs.capitalbikeshare.com/gbfs/en/station_status.json")["data"]["stations"]
 df_json_normal = pd.json_normalize(df_json)
 df_stations = add_current_num_bikes(df_json_normal, df_stations)
 
@@ -103,6 +98,7 @@ app_ui = ui.page_fluid(
         ui.panel_well("Where can I get a bike? -- Capital Bikeshare Python"),
         ui.help_text("Bike Station Map"),
     ),
+    output_widget("map2"),
     output_widget("map"),
     ui.div(
         ui.output_text_verbatim("text"),
@@ -118,6 +114,12 @@ app_ui = ui.page_fluid(
 
 
 def server(input: Inputs, output: Outputs, session: Session):
+    
+    df_to_map = process_dataframe_for_mapping(df_stations)
+    coords_station: dict = create_coords_station_dict(df_stations)
+    station = reactive.Value(False)
+
+
     def get_id_name(df_map: pd.DataFrame) -> tuple:
         '''Look up station id and name based on the coordinates from the click event'''
         if tuple(station()) in coords_station:
@@ -131,18 +133,22 @@ def server(input: Inputs, output: Outputs, session: Session):
             name = coords_station[coords][1]
         return (id, name)
 
+
     def add_id(df: pd.DataFrame, df_map: pd.DataFrame) -> pd.DataFrame:
         '''Add the id column to dataframe from looked up id'''
         if station():
             df["id"] = get_id_name(df_map)[0]
         return df
 
+
     def handle_click(**kwargs):
         '''A callback function to assign the coordinate values to a reactive Value station'''
         coords = kwargs["coordinates"]
         station.set(coords)
 
-    station = reactive.Value(False)
+    ###########################
+    # Map
+    ###########################
     map = Map(
         basemap=basemaps.Esri.WorldTopoMap,
         center=(38.888553, -77.032429),
@@ -151,17 +157,10 @@ def server(input: Inputs, output: Outputs, session: Session):
     )
     map.layout.height = "500px"
     map.layout.width = "100%"
-    register_widget("map", map)
-
-    df_to_map = process_dataframe_for_mapping(df_stations)
-    coords_station: dict = create_coords_station_dict(df_stations)
 
     COLOR = "darkblue"
     circle_markers: list = []
     for name, lat, lon, pred_num_bikes, coords in df_to_map.values:
-        message = HTML(
-            value=f"Right now there are {int(pred_num_bikes)} bikes at: {name}"
-        )
         circle = Circle(
             location=(lat, lon),
             radius=int(pred_num_bikes) * 2,
@@ -172,15 +171,24 @@ def server(input: Inputs, output: Outputs, session: Session):
             name=name,
         )
         circle.on_click(handle_click)
-        circle.popup = message
+        
+        # TODO: For some reason, `circle.popup = message` is causing the markers
+        # to not render on the app.  (SE) have commented this out to get the app working
+        # again. We should figure out how to get this to work. Here is an example:
+        # https://ipyleaflet.readthedocs.io/en/latest/layers/popup.html
+        # message = HTML()
+        # message.value = f"Right now there are {int(pred_num_bikes)} bikes at: {name}"
+        # circle.popup = message
+        
         circle_markers.append(circle)
 
     marker_cluster = MarkerCluster(markers=circle_markers)
     map.add_layer(marker_cluster)
+    register_widget("map", map)
 
-###########################
-# Reactive outputs
-###########################
+    ###########################
+    # Reactive outputs
+    ###########################
 
     @output()
     @render.text()
