@@ -136,3 +136,5 @@ dmypy.json
 # project folders
 playground
 rsconnect*
+
+/.luarc.json
