@@ -5,12 +5,8 @@ init:
     @echo "Run the following command to activate the virtual environment:"
     @echo ""
     @echo "source .venv/bin/activate"
-
-run:
-    shiny run --reload app.app:app
-
+    
 write-manifest:
-    rsconnect write-manifest shiny \
-        --entrypoint app:app \
+    .venv/bin/rsconnect write-manifest notebook \
         --overwrite \
-        app
+        model_training_deployment.ipynb

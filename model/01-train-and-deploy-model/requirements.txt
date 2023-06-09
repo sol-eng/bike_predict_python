@@ -6,3 +6,6 @@ scikit-learn==1.2.2
 vetiver==0.2.1
 ipykernel==6.23.1
 pyodbc==4.0.39
+
+# Install the `bikeshare` package. To bump the version install from a
+https://github.com/sol-eng/bike_predict_python/releases/download/v0.0.1/bikeshare-0.1.0-py3-none-any.whl

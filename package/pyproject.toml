@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "bikeshare"
+version = "0.1.0"
+description = "Helper functions for working with bikeshare data"
+authors = ["SamEdwardes <sam.edwardes@posit.co>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pandas = "^2.0.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

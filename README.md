@@ -11,11 +11,29 @@ This repository contains an example of using [pins](https://rstudio.github.io/pi
 
 ## Individual Content
 
-| Content                                   | Description                                                  | Code                                                         | Content Deployed to Connect (not public yet)                                  |
-| ----------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **Model** - Train and Deploy Model | From *Content DB* get the *bike_model_data* table and then train a model. The model is saved to Connect as a pin, and then deployed to Connect as a plumber API using vetiver. | [model/01-train-and-deploy-model/model_training_deployment.ipynb](model/01-train-and-deploy-model/model_training_deployment.ipynb) | [Jupyter Notebook](https://colorado.rstudio.com/rsc/bikeshare-model-retraining/), [Model](https://colorado.rstudio.com/rsc/bikeshare-rf-python/), [Vetiver API](https://colorado.rstudio.com/rsc/bike-predict-python-api/) |
-| **App** - Client App                      | Use the API endpoint to interactively serve predictions to a shiny app.| [app/app.py](app/app.py)                                           | [Shiny app](https://colorado.rstudio.com/rsc/bike-share-python-app/)                                                                                                                                                              |
-| **App** - Dev Client App                  | A development version of the client app.                                | [app-dev/app.py](app-dev/app.py)                                   | [Shiny app](https://colorado.rstudio.com/rsc/bike-share-python-dev/)                                                                                                                                                              |
+### Model - Train and Deploy Model
+
+- **Description:** From *Content DB* get the *bike_model_data* table and then train a model. The model is saved to Connect as a pin, and then deployed to Connect as a plumber API using vetiver.
+- **Code:** [model/01-train-and-deploy-model/model_training_deployment.ipynb](model/01-train-and-deploy-model/model_training_deployment.ipynb)
+- **Deployed Content:**
+    - Jupyter Notebook (<https://colorado.rstudio.com/rsc/bikeshare-model-retraining/> | [Dashboard View](https://colorado.posit.co/rsc/connect/#/apps/725e31c7-1588-45bb-95d6-cee508798145))
+    - Model Pin (<https://colorado.rstudio.com/rsc/bikeshare-rf-python/> | [Dashboard View](https://colorado.posit.co/rsc/connect/#/apps/02ea07b1-b1e6-492c-895b-e67e92bdd072))
+    - Vetiver API: (<https://colorado.rstudio.com/rsc/bike-predict-python-api/> | [Dashboard View](https://colorado.posit.co/rsc/connect/#/apps/f3367a52-1b61-42a1-b20d-c36317529c57))
+
+### App - Client App
+
+- **Description:** Use the API endpoint to interactively serve predictions to a shiny app.
+- **Code:** [app/app.py](app/app.py)
+- **Deployed Content:** 
+    - Shiny App (<https://colorado.posit.co/rsc/bike-share-python-app/> | [Dashboard View](https://colorado.posit.co/rsc/connect/#/apps/0e6cc3a1-b168-40fe-9093-ce9fa403a1ea))
+
+### App - Dev Client App
+
+- **Description:** A development version of the client app.   
+- **Code:** [app-dev/app.py](app-dev/app.py)
+- **Deployed Content:** 
+    - Shiny App (<https://colorado.rstudio.com/rsc/bike-share-python-dev/> | [Dashboard View]())
+
 
 ## Contributing
 
