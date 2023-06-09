@@ -6,7 +6,7 @@
     "entrypoint": "model_training_deployment.ipynb"
   },
   "python": {
-    "version": "3.11.3",
+    "version": "3.11.1",
     "package_manager": {
       "name": "pip",
       "version": "23.1.2",
@@ -15,10 +15,10 @@
   },
   "files": {
     "model_training_deployment.ipynb": {
-      "checksum": "7ae2bca285cdaa018595bc03fd345f29"
+      "checksum": "952d6f03057303f1ee00a82c343069c0"
     },
     "requirements.txt": {
-      "checksum": "7374a22f23e562ece6ec80b893031d56"
+      "checksum": "4b929d25994e546ff2e426c268b340ae"
     }
   }
 }
