@@ -1,12 +1,12 @@
 init:
     python -m venv .venv
     .venv/bin/python -m pip install --upgrade pip wheel setuptools
-    .venv/bin/python -m pip install -r app/requirements.txt
+    .venv/bin/python -m pip install -r requirements.txt
     @echo "Run the following command to activate the virtual environment:"
     @echo ""
     @echo "source .venv/bin/activate"
     
 write-manifest:
-    rsconnect write-manifest notebook \
+    .venv/bin/rsconnect write-manifest notebook \
         --overwrite \
         model_training_deployment.ipynb
