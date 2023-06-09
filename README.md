@@ -17,8 +17,8 @@ This repository contains an example of using [pins](https://rstudio.github.io/pi
 - **Code:** [model/01-train-and-deploy-model/model_training_deployment.ipynb](model/01-train-and-deploy-model/model_training_deployment.ipynb)
 - **Deployed Content:**
     - Jupyter Notebook (<https://colorado.rstudio.com/rsc/bikeshare-model-retraining/> | [Dashboard View](https://colorado.posit.co/rsc/connect/#/apps/725e31c7-1588-45bb-95d6-cee508798145))
-    - Model Pin (<https://colorado.rstudio.com/rsc/bikeshare-rf-python/> | [Dashboard View](https://colorado.posit.co/rsc/connect/#/apps/02ea07b1-b1e6-492c-895b-e67e92bdd072))
-    - Vetiver API: (<https://colorado.rstudio.com/rsc/bike-predict-python-api/> | [Dashboard View](https://colorado.posit.co/rsc/connect/#/apps/f3367a52-1b61-42a1-b20d-c36317529c57))
+    - Model Pin (<https://colorado.rstudio.com/rsc/bikeshare-rf-python/> | [Dashboard View](https://colorado.posit.co/rsc/connect/#/apps/6a925a0f-349d-4d57-ad67-8b151c07808d))
+    - Vetiver API: (<https://colorado.rstudio.com/rsc/bike-predict-python-api/> | [Dashboard View](https://colorado.posit.co/rsc/connect/#/apps/28923e33-dcb6-4774-b753-bf1d4c367579))
 
 ### App - Client App
 
