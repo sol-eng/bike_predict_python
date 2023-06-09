@@ -1,0 +1,16 @@
+init:
+    # python -m venv .venv
+    # .venv/bin/python -m pip install --upgrade pip wheel setuptools
+    .venv/bin/python -m pip install -r requirements.txt
+    @echo "Run the following command to activate the virtual environment:"
+    @echo ""
+    @echo "source .venv/bin/activate"
+
+run:
+    shiny run --reload app.app:app
+
+write-manifest:
+    rsconnect write-manifest shiny \
+        --entrypoint app:app \
+        --overwrite \
+        app
