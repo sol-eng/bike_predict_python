@@ -6,4 +6,8 @@ scikit-learn==1.2.2
 vetiver==0.2.1
 ipykernel==6.23.1
 pyodbc==4.0.39
-git+https://github.com/sol-eng/bike_predict_python.git@samedwardes/bug-fixes#subdirectory=package
+
+# Install the `bikeshare` package. To bump the version install from a
+# new comment hash. E.g. update this string:
+# @4964b11c6e0bb5f70bfafc28c24234ce8c6b11f5
+git+https://github.com/sol-eng/bike_predict_python.git@fe23beb4f081a163cd30cbeede06808d4bc4decc#subdirectory=package
