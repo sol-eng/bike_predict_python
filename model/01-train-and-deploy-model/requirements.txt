@@ -8,6 +8,4 @@ ipykernel==6.23.1
 pyodbc==4.0.39
 
 # Install the `bikeshare` package. To bump the version install from a
-# new comment hash. E.g. update this string:
-# @4964b11c6e0bb5f70bfafc28c24234ce8c6b11f5
-git+https://github.com/sol-eng/bike_predict_python.git@fe23beb4f081a163cd30cbeede06808d4bc4decc#subdirectory=package
+https://github.com/sol-eng/bike_predict_python/releases/download/v0.0.1/bikeshare-0.1.0-py3-none-any.whl
