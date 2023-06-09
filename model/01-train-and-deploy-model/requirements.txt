@@ -6,3 +6,4 @@ scikit-learn==1.2.2
 vetiver==0.2.1
 ipykernel==6.23.1
 pyodbc==4.0.39
+git+https://github.com/sol-eng/bike_predict_python.git@samedwardes/bug-fixes#subdirectory=package
