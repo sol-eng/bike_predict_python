@@ -32,7 +32,7 @@ This repository contains an example of using [pins](https://rstudio.github.io/pi
 - **Description:** A development version of the client app.   
 - **Code:** [app-dev/app.py](app-dev/app.py)
 - **Deployed Content:** 
-    - Shiny App (<https://colorado.rstudio.com/rsc/bike-share-python-dev/> | [Dashboard View]())
+    - Shiny App (<https://colorado.rstudio.com/rsc/bike-share-python-dev/> | [Dashboard View](https://colorado.posit.co/rsc/connect/#/apps/48254833-a1b9-44a0-b441-ec762d825cdf))
 
 
 ## Contributing
